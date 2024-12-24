@@ -5,7 +5,11 @@ with orders as
 
 payments as
 (
-    select * from {{ ref('stg_stripe__payments') }}
+    select
+    orderid,
+    sum (case when status = 'success' then amount end) as amount
+    from {{ ref('stg_stripe__payments') }}
+    group by 1
 ),
 
 final as
