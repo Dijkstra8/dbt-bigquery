@@ -17,11 +17,12 @@ final as
     select
     orders.order_id,
     orders.customer_id,
-    SUM(payments.amount) as amount
+    orders.order_date,
+    coalesce(SUM(payments.amount), 0) as amount
 
     from orders
     left join payments on orders.order_id = payments.orderid
-    group by 1,2
+    group by 1,2,3
     order by 1
 )
 
